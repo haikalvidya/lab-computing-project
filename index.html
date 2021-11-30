@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>2048 - Computing Lab</title>
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,700" rel="stylesheet">
+  </head>
+  <body>
+    <main class="wrapper">
+      <div class="intro clearfix">
+        <h1 class="intro_title"> 2048 </h1>
+      </div>
+
+      <div class="controls clearfix">
+        <div class="controls_game">
+          <button data-js="newGame" class="controls_game-btn"> New Game </button>
+        </div>
+
+        <div class="controls_score">
+          <span class="controls_score-label">Score </span>
+          <br>
+          <span class="controls_score-text" data-js="score"> </span>
+        </div>
+      </div>
+
+      <div id="touchGameboard" class="gameboard">
+        <div class="grid"></div>
+        <div class="tile-container"></div>
+      </div>
+
+      <section class="guide clearfix">
+        <h2>What is 2048 game?</h2>
+        <p>2048 is a single-player sliding tile puzzle video game created by Gabriele Cirulli on 2014.</p>
+        <p>2048 is played with numbered tiles that slide when a player moves them using the four arrow keys.</p>
+        <p>Tiles with matching number values can be merged into a single tile, which receives the values' sum.</p>
+        <p>Every turn, a new tile randomly appears in an empty spot on the board with a value of either 2 or 4.</p>
+        <p> To win, get a 2048 tile.</p>
+      </section>
+    </main>
+
+    <script type="text/html" id="template_grid_cell">
+      <div class="grid_cell"></div>
+    </script>
+
+    <script id="template_tile" type="text/html">
+      <div class="tile">
+        <span class="tile_number"></span>
+      </div>
+    </script>
+
+    <script  src="./script.js"></script>
+  </body>
+</html>
