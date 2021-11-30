@@ -22,3 +22,28 @@ function Game(size) {
   this.moveInProgress = false;
 }
 
+// Initialize grid
+Game.prototype.initBoard = function () {
+  // returning grid cell for displaying
+  function initGridCell(x, y) {
+    var getGridCell = $.parseHTML($("#template_grid_cell").html());
+    $(getGridCell).appendTo(".grid");
+    return {
+      x: x,
+      y: y,
+      tilesArray: [] 
+		};
+
+  }
+
+  // create 2d array and push grid cell
+  for (var x = 0; x < this.rows; x++) {
+    var newArray = [];
+    this.board.push(newArray);
+    for (var y = 0; y < this.columns; y++) {
+      var gridObj = initGridCell(x, y);
+      var rowCell = this.board[x];
+      rowCell.push(gridObj);
+    }
+  }
+};

@@ -406,61 +406,61 @@ box-shadow: 0 0 1px 1px #00d0a4;
 }
 
 .tile_number[data-value="4"] {
-background: #dd7373;
+background: #d9ed92;
 color: #fff;
-box-shadow: 0 0 1px 1px #dd7373;
+box-shadow: 0 0 1px 1px #d9ed92;
 }
 
 .tile_number[data-value="8"] {
-background: #7d53de;
+background: #b5e48c;
 color: #fff;
-box-shadow: 0 0 1px 1px #7d53de;
+box-shadow: 0 0 1px 1px #88997a;
 }
 
 .tile_number[data-value="16"] {
-background: #6622cc;
+background: #99d98c;
 color: #fff;
-box-shadow: 0 0 1px 1px #6622cc;
+box-shadow: 0 0 1px 1px #99d98c;
 }
 
 .tile_number[data-value="32"] {
-background: #00bfb2;
+background: #76c893;
 color: #fff;
-box-shadow: 0 0 1px 1px #00bfb2;
+box-shadow: 0 0 1px 1px #76c893;
 }
 
 .tile_number[data-value="64"] {
-background: #c06ff2;
+background: #52b69a;
 color: #fff;
-box-shadow: 0 0 1px 1px #c06ff2;
+box-shadow: 0 0 1px 1px #52b69a;
 }
 
 .tile_number[data-value="128"] {
-background: #340068;
+background: #34a0a4;
 color: #fff;
-box-shadow: 0 0 1px 1px #340068;
+box-shadow: 0 0 1px 1px #34a0a4;
 }
 
 .tile_number[data-value="256"] {
-background: #3e92cc;
+background: #168aad;
 color: #fff;
-box-shadow: 0 0 1px 1px #3e92cc;
+box-shadow: 0 0 1px 1px #168aad;
 }
 
 .tile_number[data-value="512"] {
-background: #d8315b;
+background: #1a759f;
 color: #fff;
-box-shadow: 0 0 1px 1px #d8315b;
+box-shadow: 0 0 1px 1px #1a759f;
 }
 
 .tile_number[data-value="1024"] {
-background: #1c0b19;
+background: #1e6091;
 color: #fff;
-box-shadow: 0 0 1px 1px #1c0b19;
+box-shadow: 0 0 1px 1px #1e6091;
 }
 
 .tile_number[data-value="2048"] {
-background: #1c0b19;
+background: #184e77;
 color: #fff;
-box-shadow: 0 0 1px 1px #1c0b19;
+box-shadow: 0 0 1px 1px #184e77;
 }
