@@ -24,6 +24,42 @@ function Game(size) {
   this.moveInProgress = false;
 }
 
+// the Tile object
+function Tile(x,y, game) {
+  //curent postion
+  this.x = x;
+  this.y = y;
+
+  // game now
+  this.game = game;
+  // jquery element
+  this.elm;
+
+  // variabel for indentify tile can move or not
+  this.canMOve = false;
+
+  // getter or setter for value, default value is 2
+  this.valueProp = 2;
+  Object.defineProperties(this, {
+    value: {
+      get: function() {
+        return this.valueProp;
+      }, set: function(value) {
+        this.valueProp = val;
+        this.elm.find(".tile_number").
+        html(this.valueProp).valueattr("data-value", value);
+      }
+    }
+  });
+}
+
+// tile set position
+Tile.prototype.setPosition = function(getX, getY) {
+  this.x = getX;
+  this.y = getY;
+  this.game.board[getX][getY].tilesArray.push(this);
+}
+
 // Initialize grid
 Game.prototype.initBoard = function () {
   // returning grid cell for displaying
@@ -59,3 +95,4 @@ Game.prototype.gameWon = function() {
 Game.prototype.gameLost = function() {
   alert("Your are a loser.");
 };
+
