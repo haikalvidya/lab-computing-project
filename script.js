@@ -60,6 +60,11 @@ Tile.prototype.setPosition = function(getX, getY) {
   this.game.board[getX][getY].tilesArray.push(this);
 }
 
+// TODO remove old set position
+// the idea : poping up the value from arrat board[getx][gety]
+
+// remove old set position
+
 // Initialize grid
 Game.prototype.initBoard = function () {
   // returning grid cell for displaying
