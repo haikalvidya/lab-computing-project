@@ -21,7 +21,7 @@ function Tile(x,y, game) {
   this.elm;
 
   // variabel for indentify tile can move or not
-  this.canMOve = false;
+  this.canMove = false;
 
   // getter or setter for value, default value is 2
   this.valueProp = 2;
@@ -49,6 +49,11 @@ Tile.prototype.setPosition = function(getX, getY) {
 // the idea : poping up the value from arrat board[getx][gety]
 
 // remove old set position
+
+// TODO add move logic of this game
+// the idea :
+
+// move logic of 2048 game
 
 
 /*
