@@ -5,24 +5,9 @@ function gameStart() {
 }
 $(document).ready(gameStart);
 
-// THe Game Board
-function Game(size) {
-  this.rows = size;
-  this.columns = size;
-  // board 2d array, with grid cell object
-  this.board = [];
-  
-  // flatten an 2d array
-  this.boardFlatten = function () {
-    return _.flatten(this.board);
-  };
-  // score biard
-  this.score = 0;
-  $('[data-js="score"]').html(this.score.toString());
-
-  // check whether any tile movement is in progress
-  this.moveInProgress = false;
-}
+/*
+* TILE SECTION
+*/
 
 // the Tile object
 function Tile(x,y, game) {
@@ -64,6 +49,30 @@ Tile.prototype.setPosition = function(getX, getY) {
 // the idea : poping up the value from arrat board[getx][gety]
 
 // remove old set position
+
+
+/*
+* GAME BOARD SECTION
+*/
+
+// THe Game Board
+function Game(size) {
+  this.rows = size;
+  this.columns = size;
+  // board 2d array, with grid cell object
+  this.board = [];
+  
+  // flatten an 2d array
+  this.boardFlatten = function () {
+    return _.flatten(this.board);
+  };
+  // score biard
+  this.score = 0;
+  $('[data-js="score"]').html(this.score.toString());
+
+  // check whether any tile movement is in progress
+  this.moveInProgress = false;
+}
 
 // Initialize grid
 Game.prototype.initBoard = function () {
