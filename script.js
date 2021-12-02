@@ -135,3 +135,8 @@ Game.prototype.gameLost = function() {
 // idea : check each length of the index using boardFlatten for 1d version
 
 // method get emtpy cells
+
+// TODO method for merge tiles logic
+// idea : 
+
+// merge tiles logic
