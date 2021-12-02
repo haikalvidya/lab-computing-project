@@ -11,6 +11,8 @@ function Game(size) {
   this.columns = size;
   // board 2d array, with grid cell object
   this.board = [];
+  
+  // flatten an 2d array
   this.boardFlatten = function () {
     return _.flatten(this.board);
   };
@@ -46,4 +48,14 @@ Game.prototype.initBoard = function () {
       rowCell.push(gridObj);
     }
   }
+};
+
+// Case for Game is Won
+Game.prototype.gameWon = function() {
+  alert("You won!");
+};
+
+// CAse for game is lost
+Game.prototype.gameLost = function() {
+  alert("Your are a loser.");
 };
