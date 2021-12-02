@@ -38,6 +38,12 @@ function Tile(x,y, game) {
   });
 }
 
+// TODO Initialize the tile
+// the idea : parsing html, and add value or call all of method tile
+
+// init tile
+
+
 // tile set position
 Tile.prototype.setPosition = function(getX, getY) {
   this.x = getX;
@@ -55,8 +61,12 @@ Tile.prototype.setPosition = function(getX, getY) {
 
 // move logic of 2048 game
 
+// TODO animation of tile to some position
 
-/*
+// Animation of tile
+
+
+/* -------------------------------------------------------------
 * GAME BOARD SECTION
 */
 
@@ -115,3 +125,8 @@ Game.prototype.gameLost = function() {
   alert("Your are a loser.");
 };
 
+// TODO Checking is game over or not
+// idea : checking each value of array any 2048 or not,
+//        and check move possiblity (any tile can move or no empty cells)
+
+// check game over or not
