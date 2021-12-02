@@ -130,3 +130,8 @@ Game.prototype.gameLost = function() {
 //        and check move possiblity (any tile can move or no empty cells)
 
 // check game over or not
+
+// TODO methog for get emty cells on array of gameboard
+// idea : check each length of the index using boardFlatten for 1d version
+
+// method get emtpy cells
