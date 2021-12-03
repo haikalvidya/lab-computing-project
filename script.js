@@ -31,17 +31,24 @@ function Tile(x,y, game) {
         return this.valueProp;
       }, set: function(value) {
         this.valueProp = val;
-        this.elm.find(".tile_number").
-        html(this.valueProp).valueattr("data-value", value);
+        this.elm.find(".tile_number").html(this.valueProp).valueattr("data-value", value);
       }
     }
   });
 }
 
-// TODO Initialize the tile
-// the idea : parsing html, and add value or call all of method tile
-
 // init tile
+Tile.prototype.initialize = function () {
+  var theTile = $.parseHTML($("#template_tile").html());
+  this.el = $(theTile);
+  this.el.
+  find(".tile_number").
+  html(this.valueProp).
+  attr("data-value", 2);
+  this.setPosition(this.x, this.y);
+  this.el.appendTo(".tile-container");
+  // TODO add animation in initialization
+}
 
 
 // tile set position
@@ -55,15 +62,90 @@ Tile.prototype.setPosition = function(getX, getY) {
 // the idea : poping up the value from arrat board[getx][gety]
 
 // remove old set position
+Tile.prototype.removePosition = function(getX, getY) {
+
+}
+
 
 // TODO add move logic of this game
 // the idea :
 
 // move logic of 2048 game
+Tile.prototype.move = function (theFlag, theDirection) {
+  var theNext;
+  var isMatch;
+  var isNextEmpty;
+  var nextPosArray = [];
+  var direction = theDirection.toLowerCase();
+
+  // checking next position
+  // if UP: check next position
+  if (direction === "up") {
+    getNext = this.y > 0 ? this.game.board[this.x][this.y - 1] : false;
+    nextPositionArray.push(this.x, this.y - 1);
+  } 
+  // sub TODO lanjutin ifnya right, left, down
+
+
+  // sub TODO check if next position contains match or is empty
+  isMatch =
+
+  var getX = this.x;
+  var getY = this.y;
+  isNextEmpty = getNext.tilesArray.length == 0 && getNext;
+
+  // sub TODO check only mode, to check if tile can move
+  if (theFlag) {
+    return isNextEmpty || isNextEmpty ? true : false;
+  } else if () {
+    // set postion next post array
+
+    // remove old position
+
+    // not continue if a tile has matched then merged the tile
+
+  }
+
+}
 
 // TODO animation of tile to some position
 
 // Animation of tile
+Tile.prototype.animationPosition = function (initFlag) {
+  var animationDuration = 175;
+  var getPromise = $.Deferred();
+
+  var fromLeft = this.x * (100 / this.game.rows);
+  var fromTop = this.y * (100 / this.game.columns);
+
+  if (initFlag){
+    this.el.addClass("initialize");
+  } else {
+    this.el.removeClass("initialize");
+  }
+
+  function setPosition() {
+    this.el.addClass("animate");
+    this.el.attr({
+      "data-x": fromLeft,
+      "data-y": fromTop
+    });
+  }
+
+  function resolvePromise() {
+    getPromise.resolve();
+    this.el.removeClass("animate");
+    this.el.removeClass("initialize");
+  }
+
+  if (initalizeFlag) {
+    // sub TODO set position and window settimeout animationduration + 50
+
+  } else {
+    // sub TODO set position and window settimeout animationduration
+  }
+  return getPromise;
+}
 
 
 /* -------------------------------------------------------------
@@ -115,6 +197,21 @@ Game.prototype.initBoard = function () {
   }
 };
 
+// init tiles
+Game.prototype.initTile = function () {
+  var emptyCell = this.getRandomEmptyCell();
+  var tile = new Tile(emptyCell.x, emptyCell.y, game);
+};
+
+// TODO function init game
+// idea: run all init game
+
+// run all init
+Game.prototype.initialize = function () {
+  this.initBoard();
+  this.initTile();
+};
+
 // Case for Game is Won
 Game.prototype.gameWon = function() {
   alert("You won!");
@@ -131,10 +228,20 @@ Game.prototype.gameLost = function() {
 
 // check game over or not
 
-// TODO methog for get emty cells on array of gameboard
-// idea : check each length of the index using boardFlatten for 1d version
-
 // method get emtpy cells
+Game.prototype.getEmptyCells = function () {
+  var theemptyCells = _.filter(this.boardFlatten(), function (value) {
+    return !value.tilesArray.length;
+  });
+  return theemptyCells;
+};
+
+// get random idx empty cell
+Game.prototype.getRandomEmptyCell = function() {
+  var emptyGridCells = this.getEmptyCells();
+  var random = Math.floor(Math.random() * Math.floor(emptyGridCells.length));
+  return emptyGridCells[random];
+}
 
 // TODO method for merge tiles logic
 // idea : 
