@@ -60,6 +60,7 @@ Tile.prototype.setPosition = function(getX, getY) {
 
 // TODO remove old set position
 // the idea : poping up the value from arrat board[getx][gety]
+// for andangsudrajad
 
 // remove old set position
 Tile.prototype.removePosition = function(getX, getY) {
@@ -85,9 +86,11 @@ Tile.prototype.move = function (theFlag, theDirection) {
     nextPositionArray.push(this.x, this.y - 1);
   } 
   // sub TODO lanjutin ifnya right, left, down
+  // for shadifa
 
 
   // sub TODO check if next position contains match or is empty
+  // for dwija
   isMatch =
 
   var getX = this.x;
@@ -99,11 +102,13 @@ Tile.prototype.move = function (theFlag, theDirection) {
     return isNextEmpty || isNextEmpty ? true : false;
   } else if () {
     // set postion next post array
+    // for andangsudrajad
 
     // remove old position
+    // for dwija
 
     // not continue if a tile has matched then merged the tile
-
+    // for shadif
   }
 
 }
@@ -140,9 +145,12 @@ Tile.prototype.animationPosition = function (initFlag) {
 
   if (initalizeFlag) {
     // sub TODO set position and window settimeout animationduration + 50
+    // for raihan romzi
 
   } else {
     // sub TODO set position and window settimeout animationduration
+    // for andang sudrajad
+    
   }
   return getPromise;
 }
