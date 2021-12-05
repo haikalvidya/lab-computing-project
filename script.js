@@ -83,8 +83,17 @@ Tile.prototype.move = function (theFlag, theDirection) {
   // if UP: check next position
   if (direction === "up") {
     getNext = this.y > 0 ? this.game.board[this.x][this.y - 1] : false;
-    nextPositionArray.push(this.x, this.y - 1);
-  } 
+    nextPosArray.push(this.x, this.y - 1);
+  } else if (direction === "right") {
+	  getNext = this.x > 0 ? this.game.board[this.x - 1][this.y] : false;
+	  nextPosArray.push(this.x - 1, this.y);
+  } else if (direction === "left") {
+	  getNext = this.x < 0 ? this.game.board[this.x + 1][this.y] : false;
+	  nextPosArray.push(this.x + 1, this.y);
+  } else if (direction === "down") {
+	  getNext = this.y < 0 ? this.game.board[this.x][this.y + 1] : false;
+	  nextPosArray.push(this.x, this.y + 1);
+  }
   // sub TODO lanjutin ifnya right, left, down
   // for shadifa
 
