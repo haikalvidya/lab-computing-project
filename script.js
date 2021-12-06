@@ -1,7 +1,8 @@
 // First Gamestart
 function gameStart() {
 	window.game = new Game(4);
-	window.game.initialize();
+  window.game.initBoard();
+	window.game.initTile();
 }
 $(document).ready(gameStart);
 
@@ -204,15 +205,6 @@ Game.prototype.initBoard = function () {
 Game.prototype.initTile = function () {
   var emptyCell = this.getRandomEmptyCell();
   var tile = new Tile(emptyCell.x, emptyCell.y, game);
-};
-
-// TODO function init game
-// idea: run all init game
-
-// run all init
-Game.prototype.initialize = function () {
-  this.initBoard();
-  this.initTile();
 };
 
 // Case for Game is Won
