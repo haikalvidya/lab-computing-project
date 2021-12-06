@@ -47,7 +47,7 @@ Tile.prototype.initialize = function () {
   attr("data-value", 2);
   this.setPosition(this.x, this.y);
   this.el.appendTo(".tile-container");
-  // TODO add animation in initialization
+  this.animationPosition(true);
 }
 
 
@@ -57,19 +57,10 @@ Tile.prototype.setPosition = function(getX, getY) {
   this.y = getY;
   this.game.board[getX][getY].tilesArray.push(this);
 }
-
-// TODO remove old set position
-// the idea : poping up the value from arrat board[getx][gety]
-// for andangsudrajad
-
-// remove old set position
+// tile remover for old position
 Tile.prototype.removePosition = function(getX, getY) {
-
+  this.game.board[getX][getY].tilesArray.pop();
 }
-
-
-// TODO add move logic of this game
-// the idea :
 
 // move logic of 2048 game
 Tile.prototype.move = function (theFlag, theDirection) {
@@ -82,51 +73,52 @@ Tile.prototype.move = function (theFlag, theDirection) {
   // checking next position
   // if UP: check next position
   if (direction === "up") {
-    getNext = this.y > 0 ? this.game.board[this.x][this.y - 1] : false;
+    theNext = this.y > 0 ? this.game.board[this.x][this.y - 1] : false;
     nextPosArray.push(this.x, this.y - 1);
   } else if (direction === "right") {
-	  getNext = this.x > 0 ? this.game.board[this.x - 1][this.y] : false;
+	  theNext = this.x > 0 ? this.game.board[this.x - 1][this.y] : false;
 	  nextPosArray.push(this.x - 1, this.y);
   } else if (direction === "left") {
-	  getNext = this.x < 0 ? this.game.board[this.x + 1][this.y] : false;
+	  theNext = this.x < 0 ? this.game.board[this.x + 1][this.y] : false;
 	  nextPosArray.push(this.x + 1, this.y);
   } else if (direction === "down") {
-	  getNext = this.y < 0 ? this.game.board[this.x][this.y + 1] : false;
+	  theNext = this.y < 0 ? this.game.board[this.x][this.y + 1] : false;
 	  nextPosArray.push(this.x, this.y + 1);
   }
-  // sub TODO lanjutin ifnya right, left, down
-  // for shadifa
 
+  // check empty with the next gameboard
+  isNextEmpty = theNext && theNext.tilesArray.length === 0;
 
-  // sub TODO check if next position contains match or is empty
-  // for dwija
-  isMatch =
+  // check is match from the next tiles array length and value prop of array
+  isMatch = theNext && theNext.tilesArray.length === 1 && 
+  theNext.tilesArray[0].valueProp === this.valueProp;
 
-  var getX = this.x;
-  var getY = this.y;
-  isNextEmpty = getNext.tilesArray.length == 0 && getNext;
+  // for removing old position tile
+  var getOldX = this.x;
+  var getOldY = this.y;
 
-  // sub TODO check only mode, to check if tile can move
+  // to check if tile can move
   if (theFlag) {
-    return isNextEmpty || isNextEmpty ? true : false;
-  } else if () {
-    // set postion next post array
-    // for andangsudrajad
+    return isNextEmpty || isMatch ? true : false;
+  } else if (isNextEmpty || isMatch) {
+    // set postion next position tile from array
+    this.setPosition(nextPosArray[0], nextPosArray[1]);
 
     // remove old position
-    // for dwija
+    this.removePosition(getOldX, getOldY)
 
     // not continue if a tile has matched then merged the tile
-    // for shadif
+    if (!isNextMatch) {
+      this.move(direction);
+    }
   }
 
 }
 
-// TODO animation of tile to some position
-
 // Animation of tile
 Tile.prototype.animationPosition = function (initFlag) {
   var animationDuration = 175;
+  // jquery things to tell the browser only exec the script once the html doc has been fully parsed
   var getPromise = $.Deferred();
 
   var fromLeft = this.x * (100 / this.game.rows);
@@ -138,28 +130,22 @@ Tile.prototype.animationPosition = function (initFlag) {
     this.el.removeClass("initialize");
   }
 
-  function setPosition() {
+  if (initalizeFlag) {
+    // set animation position and window settimeout animationduration + 50
     this.el.addClass("animate");
     this.el.attr({
       "data-x": fromLeft,
       "data-y": fromTop
     });
-  }
 
-  function resolvePromise() {
+    window.setTimeout(resolvePromise, animationDuration + 50);
+  } else {
+    // set animation position and window settimeout animationduration
     getPromise.resolve();
     this.el.removeClass("animate");
     this.el.removeClass("initialize");
-  }
 
-  if (initalizeFlag) {
-    // sub TODO set position and window settimeout animationduration + 50
-    // for raihan romzi
-
-  } else {
-    // sub TODO set position and window settimeout animationduration
-    // for andang sudrajad
-    
+    window.setTimeout(resolvePromise, animationDuration);
   }
   return getPromise;
 }
