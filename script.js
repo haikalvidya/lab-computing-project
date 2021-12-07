@@ -214,9 +214,20 @@ Game.prototype.gameLost = function() {
   alert("Your are a loser.");
 };
 
-// TODO Checking is game over or not
-// idea : checking each value of array any 2048 or not,
-//        and check move possiblity (any tile can move or no empty cells)
+// method get emtpy cells
+Game.prototype.getEmptyCells = function () {
+  var theemptyCells = _.filter(this.boardFlatten(), function (value) {
+    return !value.tilesArray.length;
+  });
+  return theemptyCells;
+};
+
+// get random idx empty cell
+Game.prototype.getRandomEmptyCell = function() {
+  var emptyGridCells = this.getEmptyCells();
+  var random = Math.floor(Math.random() * Math.floor(emptyGridCells.length));
+  return emptyGridCells[random];
+}
 
 // check game over or not
 Game.prototype.isGameOver = function () {
@@ -270,23 +281,28 @@ Game.prototype.isGameOver = function () {
   }
 };
 
-
-// method get emtpy cells
-Game.prototype.getEmptyCells = function () {
-  var theemptyCells = _.filter(this.boardFlatten(), function (value) {
-    return !value.tilesArray.length;
-  });
-  return theemptyCells;
-};
-
-// get random idx empty cell
-Game.prototype.getRandomEmptyCell = function() {
-  var emptyGridCells = this.getEmptyCells();
-  var random = Math.floor(Math.random() * Math.floor(emptyGridCells.length));
-  return emptyGridCells[random];
-}
-
 // TODO method for merge tiles logic
 // idea : 
 
 // merge tiles logic
+Game.prototype.TilesMerge = function() {
+  var theNewScore = this.score;
+  var gameBoard = this.boardFlatten();
+
+  // checking through all tiles
+  gameBoard.forEach((value, index, array) => {
+    if (value.tilesArray.length === 2) {
+      // updating value from current valueprop
+      value.tilesArray[0].value = value.tilesArray[0].valueProp * 2;
+      // update score
+      theNewScore += value.tilesArray[0].valueProp;
+      // remove the second tile
+      var p = value.tilesArray.pop();
+      p.el.remove();
+    }
+  });
+
+  // updating score board html
+  this.score = theNewScore;
+  $('[data-js="score"]').html(this.score.toString());
+};
