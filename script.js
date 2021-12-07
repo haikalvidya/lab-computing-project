@@ -21,9 +21,6 @@ function Tile(x,y, game) {
   // jquery element
   this.elm;
 
-  // variabel for indentify tile can move or not
-  this.canMove = false;
-
   // getter or setter for value, default value is 2
   this.valueProp = 2;
   Object.defineProperties(this, {
@@ -222,6 +219,57 @@ Game.prototype.gameLost = function() {
 //        and check move possiblity (any tile can move or no empty cells)
 
 // check game over or not
+Game.prototype.isGameOver = function () {
+  var theGameBoard = this.boardFlatten();
+  var isAnyTileMove = false;
+  var emptyCells = false;
+  var is2048 = false;
+
+  // case if game is over
+  // check if there are empty cells
+  if (this.getEmptyCells().length > 0) {
+    emptyCells = true;
+  }
+
+  // check if the tiles any 2048
+  theGameBoard.forEach((value, index, array) => {
+    value.tilesArray.forEach((value, index, array) => {
+      if (value.valueProp === 2048) {
+        is2048 = true;
+      }
+    });
+  });
+  // Check if move possible
+  theGameBoard.forEach((value, index, array) => {
+    value.tilesArray.forEach((value, index, array) => {
+      value.moveCheck();
+      // checking move
+      if (
+        value.move("up", true) ||
+        value.move("right", true) ||
+        value.move("down", true) ||
+        value.move("left", true))
+      {
+        isAnyTileMove = true;
+      }
+    });
+  });
+
+  // if game won
+  if (is2048) {
+    this.gameWon();
+    return true;
+  } else if (!emptyCells && !isAnyTileMove) {
+    // if no empty cells or there is no tile can move
+    // the game is lost
+    this.gameLost();
+    return true;
+  } else {
+    // if there is still a tile can move or an empty tile
+    return false;
+  }
+};
+
 
 // method get emtpy cells
 Game.prototype.getEmptyCells = function () {
