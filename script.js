@@ -160,19 +160,20 @@ function Game(size) {
   // board 2d array, with grid cell object
   this.board = [];
   
+  // score biard
+  this.score = 0;
+  $('[data-js="score"]').html(this.score.toString());
+
   // flatten an 2d array
   this.boardFlatten = function () {
     return _.flatten(this.board);
   };
-  // score biard
-  this.score = 0;
-  $('[data-js="score"]').html(this.score.toString());
 
   // check whether any tile movement is in progress
   this.moveInProgress = false;
 }
 
-// Initialize grid
+// Initialize grid board
 Game.prototype.initBoard = function () {
   // returning grid cell for displaying
   function initGridCell(x, y) {
@@ -192,8 +193,8 @@ Game.prototype.initBoard = function () {
     this.board.push(newArray);
     for (var y = 0; y < this.columns; y++) {
       var gridObj = initGridCell(x, y);
-      var rowCell = this.board[x];
-      rowCell.push(gridObj);
+      var row = this.board[x];
+      row.push(gridObj);
     }
   }
 };
@@ -202,6 +203,8 @@ Game.prototype.initBoard = function () {
 Game.prototype.initTile = function () {
   var emptyCell = this.getRandomEmptyCell();
   var tile = new Tile(emptyCell.x, emptyCell.y, game);
+  // checking game over
+  this.isGameOver();
 };
 
 // Case for Game is Won
@@ -281,9 +284,6 @@ Game.prototype.isGameOver = function () {
   }
 };
 
-// TODO method for merge tiles logic
-// idea : 
-
 // merge tiles logic
 Game.prototype.TilesMerge = function() {
   var theNewScore = this.score;
@@ -306,3 +306,36 @@ Game.prototype.TilesMerge = function() {
   this.score = theNewScore;
   $('[data-js="score"]').html(this.score.toString());
 };
+
+
+// logic of tile move on board
+Game.prototype.move = function (theDirection) {
+  theDirection = theDirection.toLowerCase();
+  var canAnyTileMoved = false;
+
+  if(this.moveInProgress) {
+    return false;
+  }
+
+  // moving flatten array by ordering
+  if (theDirection === "up") {
+    gameBoard = _.orderBy(this.boardFlatten(), "y", "asc");
+  } else if (theDirection === "down") {
+    gameBoard = _.orderBy(this.boardFlatten(), "y", "desc");
+  } else if (theDirection === "right") {
+    gameBoard = _.orderBy(this.boardFlatten(), "x", "desc");
+  } else if (theDirection === "left") {
+    gameBoard = _.orderBy(this.boardFlatten(), "y", "asc");
+  }
+
+  // move all tiles on board with logic move of tile then see there is a any tile moved
+  gameBoard.forEach((value, index, array) => {
+    value.tilesArray.length ?
+    value.tilesArray.forEach((value) => {
+      if (value.move(theDirection, true)) {
+        hasAnyTileMoved = true;
+        value.move(theDirection);
+      }
+    }) : false;
+  });
+}
