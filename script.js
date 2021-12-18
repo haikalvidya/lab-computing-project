@@ -1,8 +1,11 @@
 // First Gamestart
 function gameStart() {
 	window.game = new Game(4);
+  $(".grid").empty();
+  $(".tile-container").empty();
   window.game.initBoard();
 	window.game.initTile();
+  window.game.initMoveEventListener();
 }
 $(document).ready(gameStart);
 
@@ -28,23 +31,24 @@ function Tile(x,y, game) {
       get: function() {
         return this.valueProp;
       }, set: function(value) {
-        this.valueProp = val;
-        this.elm.find(".tile_number").html(this.valueProp).valueattr("data-value", value);
+        this.valueProp = value;
+        this.elm.
+        find(".tile_number").html(this.valueProp).attr("data-value", value);
       }
     }
   });
+
+  // init tile
+  this.initialize();
 }
 
 // init tile
 Tile.prototype.initialize = function () {
   var theTile = $.parseHTML($("#template_tile").html());
-  this.el = $(theTile);
-  this.el.
-  find(".tile_number").
-  html(this.valueProp).
-  attr("data-value", 2);
+  this.elm = $(theTile);
+  this.elm.find(".tile_number").html(this.valueProp).attr("data-value", 2);
   this.setPosition(this.x, this.y);
-  this.el.appendTo(".tile-container");
+  this.elm.appendTo(".tile-container");
   this.animationPosition(true);
 }
 
@@ -61,7 +65,7 @@ Tile.prototype.removePosition = function(getX, getY) {
 }
 
 // move logic of 2048 game
-Tile.prototype.move = function (theFlag, theDirection) {
+Tile.prototype.move = function (theDirection, theFlag) {
   var theNext;
   var isMatch;
   var isNextEmpty;
@@ -74,13 +78,13 @@ Tile.prototype.move = function (theFlag, theDirection) {
     theNext = this.y > 0 ? this.game.board[this.x][this.y - 1] : false;
     nextPosArray.push(this.x, this.y - 1);
   } else if (direction === "right") {
+	  theNext = this.x < 3 ? this.game.board[this.x + 1][this.y] : false;
+	  nextPosArray.push(this.x + 1, this.y);
+  } else if (direction === "left") {
 	  theNext = this.x > 0 ? this.game.board[this.x - 1][this.y] : false;
 	  nextPosArray.push(this.x - 1, this.y);
-  } else if (direction === "left") {
-	  theNext = this.x < 0 ? this.game.board[this.x + 1][this.y] : false;
-	  nextPosArray.push(this.x + 1, this.y);
   } else if (direction === "down") {
-	  theNext = this.y < 0 ? this.game.board[this.x][this.y + 1] : false;
+	  theNext = this.y < 3 ? this.game.board[this.x][this.y + 1] : false;
 	  nextPosArray.push(this.x, this.y + 1);
   }
 
@@ -106,7 +110,7 @@ Tile.prototype.move = function (theFlag, theDirection) {
     this.removePosition(getOldX, getOldY)
 
     // not continue if a tile has matched then merged the tile
-    if (!isNextMatch) {
+    if (!isMatch) {
       this.move(direction);
     }
   }
@@ -117,33 +121,44 @@ Tile.prototype.move = function (theFlag, theDirection) {
 Tile.prototype.animationPosition = function (initFlag) {
   var animationDuration = 175;
   // jquery things to tell the browser only exec the script once the html doc has been fully parsed
+  var self = this;
   var getPromise = $.Deferred();
 
   var fromLeft = this.x * (100 / this.game.rows);
   var fromTop = this.y * (100 / this.game.columns);
 
   if (initFlag){
-    this.el.addClass("initialize");
+    this.elm.addClass("initialize");
   } else {
-    this.el.removeClass("initialize");
+    this.elm.removeClass("initialize");
   }
 
-  if (initalizeFlag) {
+  if (initFlag) {
     // set animation position and window settimeout animationduration + 50
-    this.el.addClass("animate");
-    this.el.attr({
+    self.elm.addClass("animate");
+    self.elm.attr({
       "data-x": fromLeft,
       "data-y": fromTop
     });
 
-    window.setTimeout(resolvePromise, animationDuration + 50);
+    window.setTimeout(function() {
+      getPromise.resolve();
+      self.elm.removeClass("animate");
+      self.elm.removeClass("initialize");
+    }, animationDuration + 50);
   } else {
     // set animation position and window settimeout animationduration
-    getPromise.resolve();
-    this.el.removeClass("animate");
-    this.el.removeClass("initialize");
+    self.elm.addClass("animate");
+    self.elm.attr({
+      "data-x": fromLeft,
+      "data-y": fromTop
+    });
 
-    window.setTimeout(resolvePromise, animationDuration);
+    window.setTimeout(function() {
+      getPromise.resolve();
+      self.elm.removeClass("animate");
+      self.elm.removeClass("initialize");
+    }, animationDuration);
   }
   return getPromise;
 }
@@ -201,6 +216,7 @@ Game.prototype.initBoard = function () {
 
 // init tiles
 Game.prototype.initTile = function () {
+  this.isGameOver();
   var emptyCell = this.getRandomEmptyCell();
   var tile = new Tile(emptyCell.x, emptyCell.y, game);
   // checking game over
@@ -256,7 +272,6 @@ Game.prototype.isGameOver = function () {
   // Check if move possible
   theGameBoard.forEach((value, index, array) => {
     value.tilesArray.forEach((value, index, array) => {
-      value.moveCheck();
       // checking move
       if (
         value.move("up", true) ||
@@ -298,7 +313,7 @@ Game.prototype.TilesMerge = function() {
       theNewScore += value.tilesArray[0].valueProp;
       // remove the second tile
       var p = value.tilesArray.pop();
-      p.el.remove();
+      p.elm.remove();
     }
   });
 
@@ -306,7 +321,6 @@ Game.prototype.TilesMerge = function() {
   this.score = theNewScore;
   $('[data-js="score"]').html(this.score.toString());
 };
-
 
 // logic of tile move on board
 Game.prototype.move = function (theDirection) {
@@ -316,6 +330,7 @@ Game.prototype.move = function (theDirection) {
   if(this.moveInProgress) {
     return false;
   }
+  var gameBoard;
 
   // moving flatten array by ordering
   if (theDirection === "up") {
@@ -333,9 +348,71 @@ Game.prototype.move = function (theDirection) {
     value.tilesArray.length ?
     value.tilesArray.forEach((value) => {
       if (value.move(theDirection, true)) {
-        hasAnyTileMoved = true;
+        canAnyTileMoved = true;
         value.move(theDirection);
       }
     }) : false;
   });
+
+  canAnyTileMoved ? this.moveAnimations(gameBoard) : false;
 }
+
+// event move listener
+Game.prototype.initMoveEventListener = function() {
+  // keyboard events for moving
+  var self = this;
+  $(document).
+  off("keydown.move").
+  on("keydown.move", function (event) {
+    event.preventDefault();
+    switch (event.which) {
+    // for left
+    case 37:
+      self.move("left");
+      break;
+    // for up
+    case 38:
+      self.move("up");
+      break;
+    // for right
+    case 39:
+      self.move("right");
+      break;
+    // for down
+    case 40:
+      self.move("down");
+      break;}
+  });
+
+  // new game handler
+  $('[data-js="newGame"]').
+  off("click.newGame").
+  on("click.newGame", window.gameStart);
+}
+
+Game.prototype.moveAnimations = function (gameBoard) {
+  var promiseArray = [];
+  
+  if (this.moveInProgress) {
+    return false;
+  }
+  
+  this.moveInProgress = true;
+  gameBoard.forEach(function (val, index, array) {
+    val.tilesArray.forEach(function (val, index, array) {
+      promiseArray.push(val.animationPosition());
+    });
+  });
+  
+  var self = this;
+  $.when.apply($, promiseArray).then(function () {
+    self.moveInProgress = false;
+    self.TilesMerge();
+    self.initTile();
+  });
+  if (promiseArray.length === 0) {
+    self.moveInProgress = false;
+    self.TilesMerge();
+    self.initTile();
+  }
+};
