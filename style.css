@@ -94,6 +94,9 @@ h2 {
     font-size: 2rem;
     color: #f6f4d2;
 }
+.controls_bestScore {
+    color: #f6f4d2;
+}
 
 .gameboard {
     /* Position: relative; set for tile-container, which absolutely positions over it to match grid's dimensions; */
