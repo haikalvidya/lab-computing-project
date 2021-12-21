@@ -25,7 +25,8 @@ function Tile(x,y, game) {
   this.elm;
 
   // getter or setter for value, default value is 2
-  this.valueProp = 2;
+  // value of tile is beetween 90% get 2 and 10% get 4
+  this.valueProp = (Math.random() * 100) <= 90 ? 2 : 4;
   Object.defineProperties(this, {
     value: {
       get: function() {
@@ -46,7 +47,7 @@ function Tile(x,y, game) {
 Tile.prototype.initialize = function () {
   var theTile = $.parseHTML($("#template_tile").html());
   this.elm = $(theTile);
-  this.elm.find(".tile_number").html(this.valueProp).attr("data-value", 2);
+  this.elm.find(".tile_number").html(this.valueProp).attr("data-value", this.valueProp);
   this.setPosition(this.x, this.y);
   this.elm.appendTo(".tile-container");
   this.animationPosition(true);
@@ -206,6 +207,9 @@ Game.prototype.initBoard = function () {
 
   }
 
+  // flag for status new game or there is exists game
+  this.isExistGame = false;
+
   // create 2d array and push grid cell
   for (var x = 0; x < this.rows; x++) {
     var newArray = [];
@@ -221,8 +225,17 @@ Game.prototype.initBoard = function () {
 // init tiles
 Game.prototype.initTile = function () {
   this.isGameOver();
-  var emptyCell = this.getRandomEmptyCell();
-  var tile = new Tile(emptyCell.x, emptyCell.y, game);
+  if (!this.isExistGame){
+    for (var x = 0; x < 2; x++) {
+      var emptyCell = this.getRandomEmptyCell();
+      var tile = new Tile(emptyCell.x, emptyCell.y, game);
+    }
+    this.isExistGame = true;
+  } else {
+    var emptyCell = this.getRandomEmptyCell();
+    var tile = new Tile(emptyCell.x, emptyCell.y, game);
+  }
+  
   // checking game over
   this.isGameOver();
 };
