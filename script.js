@@ -229,12 +229,37 @@ Game.prototype.initTile = function () {
 
 // Case for Game is Won
 Game.prototype.gameWon = function() {
-  alert("You won!");
+  var bocilKemenangan = ['You won!', 'You are the winner!', 'You have a big brain!'];
+  Swal.fire({
+    title: _.sample(bocilKemenangan),
+    text: "Do you want to start new game?",
+    showCancelButton: true,
+    confirmButtonColor: '#52b69a',
+    cancelButtonColor: '#184e77',
+    confirmButtonText: 'Yes, Start now!',
+    background: '#f4f1de'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $(document).ready(gameStart);
+    }
+  });
 };
 
 // CAse for game is lost
 Game.prototype.gameLost = function() {
-  alert("Your are a loser.");
+  bocilKematian = ['Your are a loser.', 'Such a noob.', 'Bad loser.', 'The real noob.']
+  Swal.fire({
+    title: _.sample(bocilKematian),
+    text: "Do you want to start new game?",
+    showCancelButton: true,
+    confirmButtonColor: '#52b69a',
+    cancelButtonColor: '#184e77',
+    confirmButtonText: 'Yes, Start now!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $(document).ready(gameStart);
+    }
+  });
 };
 
 // method get emtpy cells
