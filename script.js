@@ -179,6 +179,10 @@ function Game(size) {
   this.score = 0;
   $('[data-js="score"]').html(this.score.toString());
 
+  // best score board
+  this.bestScore = localStorage.getItem('bestScore') || 0;
+  $('[data-js="bestScore"]').html(this.bestScore.toString());
+
   // flatten an 2d array
   this.boardFlatten = function () {
     return _.flatten(this.board);
@@ -320,6 +324,12 @@ Game.prototype.TilesMerge = function() {
   // updating score board html
   this.score = theNewScore;
   $('[data-js="score"]').html(this.score.toString());
+
+  if (this.score > this.bestScore) {
+    localStorage.setItem('bestScore', this.score);
+    this.bestScore = localStorage.getItem('bestScore') || 0;
+    $('[data-js="bestScore"]').html(this.bestScore.toString());
+  }
 };
 
 // logic of tile move on board
