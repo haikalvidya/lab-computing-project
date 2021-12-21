@@ -384,6 +384,26 @@ Game.prototype.initMoveEventListener = function() {
       break;}
   });
 
+  // touch event with hammer js
+  window.hammertime && window.hammertime.destroy();
+  window.hammertime = new Hammer(document.getElementById("touchGameboard"), {
+    recognizers: [[Hammer.Swipe, { direction: Hammer.DIRECTION_ALL }]]
+  });
+
+  window.hammertime.
+  on("swipeup", function (ev) {
+    self.move("up");
+  }).
+  on("swipedown", function (ev) {
+    self.move("down");
+  }).
+  on("swiperight", function (ev) {
+    self.move("right");
+  }).
+  on("swipeleft", function (ev) {
+    self.move("left");
+  });
+
   // new game handler
   $('[data-js="newGame"]').
   off("click.newGame").
